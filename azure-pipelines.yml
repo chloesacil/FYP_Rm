@@ -20,7 +20,10 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
-
+- task: MSBuild@1
+  inputs:
+    solution: '**/*.sln'
+    msbuildArchitecture: 'x64'
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
