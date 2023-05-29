@@ -15,15 +15,17 @@ variables:
 
 steps:
 - task: NuGetToolInstaller@1
+  displayName: 'nuget installer'
 - checkout: self
 
 - task: NuGetCommand@2
+  displayName: 'restore nuget packages'
   inputs:
     restoreSolution: '$(solution)'
-- task: MSBuild@1
+- task: DotNetCoreCLI@2
   inputs:
-    solution: '**/*.sln'
-    msbuildArchitecture: 'x64'
+    command: 'build'
+    
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
@@ -31,7 +33,25 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+#- task: VSTest@2
+#  displayName: 'run tests'
+#  inputs:
+#    platform: '$(buildPlatform)'
+#    configuration: '$(buildConfiguration)'
+#*
 - task: VSTest@2
+  displayName: 'run tests'
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\*test*.dll
+      !**\*TestAdapter.dll
+      !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'publish'
+  inputs:
+    command: 'publish'
+    projects: '$(project)'
+    publishWebProjects: true
