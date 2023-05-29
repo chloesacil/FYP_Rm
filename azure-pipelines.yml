@@ -37,7 +37,7 @@ steps:
   displayName: Build
   inputs:
     command: build
-    projects: '$(project)'
+    projects: '**/*.csproj'
     arguments: '--configuration $(buildConfiguration)' # Update this to match your need
 
 # - task: VSBuild@1
@@ -50,7 +50,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: test
-    projects: '$(project)'
+    projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
 # task: VSTest@2
 #   displayName: 'run tests'
@@ -61,7 +61,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: test
-    projects: '$(project)'
+    projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
 - task: DotNetCoreCLI@2
