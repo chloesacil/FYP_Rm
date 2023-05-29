@@ -48,10 +48,3 @@ steps:
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
-
-- task: DotNetCoreCLI@2
-  displayName: 'publish'
-  inputs:
-    command: 'publish'
-    projects: '$(project)'
-    publishWebProjects: true
