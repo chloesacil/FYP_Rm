@@ -27,11 +27,6 @@ steps:
     performMultiLevelLookup: true
     includePreviewVersions: true # Required for preview versions
 
-- task: NuGetCommand@2
-  displayName: 'restore nuget packages'
-  inputs:
-    restoreSolution: '$(solution)'
-
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
