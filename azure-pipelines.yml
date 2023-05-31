@@ -9,7 +9,6 @@ trigger:
 pool: fyp_rm_pool
 
 variables:
-  solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -28,40 +27,18 @@ steps:
     performMultiLevelLookup: true
     includePreviewVersions: true # Required for preview versions
 
-- task: NuGetCommand@2
-  displayName: 'restore nuget packages'
-  inputs:
-    restoreSolution: '$(solution)'
-
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
     command: build
-    projects: '$(project)'
+    projects: '**/*.csproj'
     arguments: '--configuration $(buildConfiguration)' # Update this to match your need
 
-# - task: VSBuild@1
-#   inputs:
-#     solution: '$(solution)'
-#     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-#     platform: '$(buildPlatform)'
-#     configuration: '$(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   inputs:
     command: test
-    projects: '$(project)'
-    arguments: '--configuration $(buildConfiguration)'
-# task: VSTest@2
-#   displayName: 'run tests'
-#   inputs:
-#     platform: '$(buildPlatform)'
-#     configuration: '$(buildConfiguration)'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: test
-    projects: '$(project)'
+    projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
 - task: DotNetCoreCLI@2
